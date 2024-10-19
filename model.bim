@@ -1,0 +1,1488 @@
+{
+  "compatibilityLevel": 1567,
+  "model": {
+    "annotations": [
+      {
+        "name": "__PBI_TimeIntelligenceEnabled",
+        "value": "1"
+      },
+      {
+        "name": "PBIDesktopVersion",
+        "value": "2.127.1327.0 (24.03)"
+      },
+      {
+        "name": "PBI_QueryOrder",
+        "value": "[\"HDHI Admission data\",\"Errors in HDHI Admission data\",\"Master Data\",\"Errors in Master Data\"]"
+      },
+      {
+        "name": "PBI_ProTooling",
+        "value": "[\"DevMode\"]"
+      }
+    ],
+    "culture": "en-US",
+    "cultures": [
+      {
+        "name": "en-US",
+        "linguisticMetadata": {
+          "content": {
+            "Language": "en-US",
+            "Version": "1.0.0"
+          },
+          "contentType": "json"
+        }
+      }
+    ],
+    "dataAccessOptions": {
+      "legacyRedirects": true,
+      "returnErrorValuesAsNull": true
+    },
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "expressions": [
+      {
+        "name": "Errors in HDHI Admission data",
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Exception"
+          }
+        ],
+        "expression": [
+          "let",
+          "Source = #\"HDHI Admission data\",",
+          "  #\"Detected Type Mismatches\" = let",
+          "    tableWithOnlyPrimitiveTypes = Table.SelectColumns(Source, Table.ColumnsOfType(Source, {type nullable number, type nullable text, type nullable logical, type nullable date, type nullable datetime, type nullable datetimezone, type nullable time, type nullable duration})),",
+          "    recordTypeFields = Type.RecordFields(Type.TableRow(Value.Type(tableWithOnlyPrimitiveTypes))),",
+          "    fieldNames = Record.FieldNames(recordTypeFields),",
+          "    fieldTypes = List.Transform(Record.ToList(recordTypeFields), each [Type]),",
+          "    pairs = List.Transform(List.Positions(fieldNames), (i) => {fieldNames{i}, (v) => if v = null or Value.Is(v, fieldTypes{i}) then v else error [Message = \"The type of the value does not match the type of the column.\", Detail = v], fieldTypes{i}})",
+          "in",
+          "    Table.TransformColumns(Source, pairs),",
+          "  #\"Added Index\" = Table.AddIndexColumn(#\"Detected Type Mismatches\", \"Row Number\" ,1),",
+          "  #\"Kept Errors\" = Table.SelectRowsWithErrors(#\"Added Index\", {\"SNO\", \"Admission No\", \"D.O.A\", \"D.O.D\", \"AGE\", \"GENDER\", \"RURAL\", \"TYPE OF ADMISSION-EMERGENCY/OPD\", \"month year\", \"duration of intensive unit stay\", \"OUTCOME\", \"SMOKING \", \"ALCOHOL\", \"DM\", \"HTN\", \"CAD\", \"PRIOR CMP\", \"CKD\", \"HB\", \"TLC\", \"PLATELETS\", \"GLUCOSE\", \"UREA\", \"CREATININE\", \"BNP\", \"RAISED CARDIAC ENZYMES\", \"EF\", \"SEVERE ANAEMIA\", \"ANAEMIA\", \"STABLE ANGINA\", \"ACS\", \"STEMI\", \"ATYPICAL CHEST PAIN\", \"HEART FAILURE\", \"HFREF\", \"HFNEF\", \"VALVULAR\", \"CHB\", \"SSS\", \"AKI\", \"CVA INFRACT\", \"CVA BLEED\", \"AF\", \"VT\", \"PSVT\", \"CONGENITAL\", \"UTI\", \"NEURO CARDIOGENIC SYNCOPE\", \"ORTHOSTATIC\", \"INFECTIVE ENDOCARDITIS\", \"DVT\", \"CARDIOGENIC SHOCK\", \"SHOCK\", \"PULMONARY EMBOLISM\", \"CHEST INFECTION\", \"DOCTORS NOTE\"}),",
+          "  #\"Reordered Columns\" = Table.ReorderColumns(#\"Kept Errors\", {\"Row Number\", \"SNO\", \"Admission No\", \"D.O.A\", \"D.O.D\", \"AGE\", \"GENDER\", \"RURAL\", \"TYPE OF ADMISSION-EMERGENCY/OPD\", \"month year\", \"duration of intensive unit stay\", \"OUTCOME\", \"SMOKING \", \"ALCOHOL\", \"DM\", \"HTN\", \"CAD\", \"PRIOR CMP\", \"CKD\", \"HB\", \"TLC\", \"PLATELETS\", \"GLUCOSE\", \"UREA\", \"CREATININE\", \"BNP\", \"RAISED CARDIAC ENZYMES\", \"EF\", \"SEVERE ANAEMIA\", \"ANAEMIA\", \"STABLE ANGINA\", \"ACS\", \"STEMI\", \"ATYPICAL CHEST PAIN\", \"HEART FAILURE\", \"HFREF\", \"HFNEF\", \"VALVULAR\", \"CHB\", \"SSS\", \"AKI\", \"CVA INFRACT\", \"CVA BLEED\", \"AF\", \"VT\", \"PSVT\", \"CONGENITAL\", \"UTI\", \"NEURO CARDIOGENIC SYNCOPE\", \"ORTHOSTATIC\", \"INFECTIVE ENDOCARDITIS\", \"DVT\", \"CARDIOGENIC SHOCK\", \"SHOCK\", \"PULMONARY EMBOLISM\", \"CHEST INFECTION\", \"DOCTORS NOTE\"}),",
+          "    HB = #\"Reordered Columns\"{1}[HB]",
+          "in",
+          "  HB"
+        ],
+        "kind": "m",
+        "lineageTag": "c3e87bda-4aba-4dfe-94af-226895635d2e",
+        "queryGroup": "Query Errors - 22-04-2024 21:14:06"
+      },
+      {
+        "name": "Errors in Master Data",
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "expression": [
+          "let",
+          "Source = #\"Master Data\",",
+          "  #\"Detected Type Mismatches\" = let",
+          "    tableWithOnlyPrimitiveTypes = Table.SelectColumns(Source, Table.ColumnsOfType(Source, {type nullable number, type nullable text, type nullable logical, type nullable date, type nullable datetime, type nullable datetimezone, type nullable time, type nullable duration})),",
+          "    recordTypeFields = Type.RecordFields(Type.TableRow(Value.Type(tableWithOnlyPrimitiveTypes))),",
+          "    fieldNames = Record.FieldNames(recordTypeFields),",
+          "    fieldTypes = List.Transform(Record.ToList(recordTypeFields), each [Type]),",
+          "    pairs = List.Transform(List.Positions(fieldNames), (i) => {fieldNames{i}, (v) => if v = null or Value.Is(v, fieldTypes{i}) then v else error [Message = \"The type of the value does not match the type of the column.\", Detail = v], fieldTypes{i}})",
+          "in",
+          "    Table.TransformColumns(Source, pairs),",
+          "  #\"Added Index\" = Table.AddIndexColumn(#\"Detected Type Mismatches\", \"Row Number\" ,1),",
+          "  #\"Kept Errors\" = Table.SelectRowsWithErrors(#\"Added Index\", {\"Admission Num\", \"Name\"}),",
+          "  #\"Reordered Columns\" = Table.ReorderColumns(#\"Kept Errors\", {\"Row Number\", \"Admission Num\", \"Name\"})",
+          "in",
+          "  #\"Reordered Columns\""
+        ],
+        "kind": "m",
+        "lineageTag": "0008318b-7f91-4a1f-ade7-e0d0197a41d7",
+        "queryGroup": "Query Errors - 22-04-2024 21:21:36"
+      }
+    ],
+    "queryGroups": [
+      {
+        "annotations": [
+          {
+            "name": "PBI_QueryGroupOrder",
+            "value": "0"
+          }
+        ],
+        "description": "Errors in queries that were loaded on 22-04-2024 21:14:06.",
+        "folder": "Query Errors - 22-04-2024 21:14:06"
+      },
+      {
+        "annotations": [
+          {
+            "name": "PBI_QueryGroupOrder",
+            "value": "1"
+          }
+        ],
+        "description": "Errors in queries that were loaded on 22-04-2024 21:21:36.",
+        "folder": "Query Errors - 22-04-2024 21:21:36"
+      }
+    ],
+    "relationships": [
+      {
+        "name": "9cdd552d-d339-4460-a0fc-8bf6f6699e0b",
+        "fromColumn": "month year",
+        "fromTable": "HDHI Admission data",
+        "joinOnDateBehavior": "datePartOnly",
+        "toColumn": "Date",
+        "toTable": "LocalDateTable_f44d6f36-4e8a-4675-97d8-78c18e7c64ec"
+      },
+      {
+        "name": "475af41e-68f4-44b0-b638-e1fe3433d96a",
+        "fromColumn": "Admission No",
+        "fromTable": "HDHI Admission data",
+        "toCardinality": "many",
+        "toColumn": "Admission Num",
+        "toTable": "Master Data"
+      }
+    ],
+    "sourceQueryCulture": "en-IN",
+    "tables": [
+      {
+        "name": "DateTableTemplate_5587cd46-ebee-4656-b344-40ebc37b515a",
+        "annotations": [
+          {
+            "name": "__PBI_TemplateDateTable",
+            "value": "true"
+          },
+          {
+            "name": "DefaultItem",
+            "value": "DateHierarchy"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Date",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              }
+            ],
+            "dataCategory": "PaddedDateTableDates",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "isNameInferred": true,
+            "lineageTag": "ee2e8c79-aa79-4636-9425-cff3e17807fb",
+            "sourceColumn": "[Date]",
+            "summarizeBy": "none",
+            "type": "calculatedTableColumn"
+          },
+          {
+            "name": "Year",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Year"
+              }
+            ],
+            "dataCategory": "Years",
+            "dataType": "int64",
+            "expression": "YEAR([Date])",
+            "isHidden": true,
+            "lineageTag": "5c5749a8-f671-4ff3-af71-7e0f2076a4b3",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "MonthNo",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "MonthNumber"
+              }
+            ],
+            "dataCategory": "MonthOfYear",
+            "dataType": "int64",
+            "expression": "MONTH([Date])",
+            "isHidden": true,
+            "lineageTag": "41426d0d-c0c1-4d28-b380-81447d06677b",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Month",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Month"
+              }
+            ],
+            "dataCategory": "Months",
+            "dataType": "string",
+            "expression": "FORMAT([Date], \"MMMM\")",
+            "isHidden": true,
+            "lineageTag": "4c42d951-c76d-4daf-b9dc-8f72c2e0dc60",
+            "sortByColumn": "MonthNo",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "QuarterNo",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "QuarterNumber"
+              }
+            ],
+            "dataCategory": "QuarterOfYear",
+            "dataType": "int64",
+            "expression": "INT(([MonthNo] + 2) / 3)",
+            "isHidden": true,
+            "lineageTag": "d6eed85f-9abb-4ae8-9329-ea4962d3f008",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Quarter",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Quarter"
+              }
+            ],
+            "dataCategory": "Quarters",
+            "dataType": "string",
+            "expression": "\"Qtr \" & [QuarterNo]",
+            "isHidden": true,
+            "lineageTag": "f0f39406-6b73-4239-88dc-f24728b90593",
+            "sortByColumn": "QuarterNo",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Day",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Day"
+              }
+            ],
+            "dataCategory": "DayOfMonth",
+            "dataType": "int64",
+            "expression": "DAY([Date])",
+            "isHidden": true,
+            "lineageTag": "d1efea32-b167-41b7-8ee6-764b3d8d9b99",
+            "summarizeBy": "none",
+            "type": "calculated"
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "Date Hierarchy",
+            "annotations": [
+              {
+                "name": "TemplateId",
+                "value": "DateHierarchy"
+              }
+            ],
+            "levels": [
+              {
+                "name": "Year",
+                "column": "Year",
+                "lineageTag": "6d481540-6aa9-454e-83c3-d345273d8fe4",
+                "ordinal": 0
+              },
+              {
+                "name": "Quarter",
+                "column": "Quarter",
+                "lineageTag": "c8ed1295-6930-4920-b4d8-3b4248cecc05",
+                "ordinal": 1
+              },
+              {
+                "name": "Month",
+                "column": "Month",
+                "lineageTag": "940dee7b-590d-4dba-80df-3b537108081b",
+                "ordinal": 2
+              },
+              {
+                "name": "Day",
+                "column": "Day",
+                "lineageTag": "0c156217-7228-4fb3-91be-2d62fcc0885c",
+                "ordinal": 3
+              }
+            ],
+            "lineageTag": "4b457f21-bae2-45f3-8361-11e051591861"
+          }
+        ],
+        "isHidden": true,
+        "isPrivate": true,
+        "lineageTag": "7de2e604-7465-4a1e-b748-7a790b8acd0b",
+        "partitions": [
+          {
+            "name": "DateTableTemplate_5587cd46-ebee-4656-b344-40ebc37b515a",
+            "mode": "import",
+            "source": {
+              "expression": "Calendar(Date(2015,1,1), Date(2015,1,1))",
+              "type": "calculated"
+            }
+          }
+        ]
+      },
+      {
+        "name": "HDHI Admission data",
+        "annotations": [
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "columns": [
+          {
+            "name": "SNO",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "92ddfeca-2ebc-4b3e-9cea-663ebb003890",
+            "sourceColumn": "SNO",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Admission No",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "changedProperties": [
+              {
+                "property": "IsHidden"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "5eb6a7c9-37f1-40e0-9932-3eb3513d5c1c",
+            "sourceColumn": "Admission No",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "D.O.A",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "ca366126-682d-4553-b2b3-9d4528c74d04",
+            "sourceColumn": "D.O.A",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "D.O.D",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "693ea3b0-191b-46b6-8480-7a150cfa3379",
+            "sourceColumn": "D.O.D",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "AGE",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "9ecf38e7-a6e1-49dd-b5c5-8151398497fe",
+            "sourceColumn": "AGE",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "GENDER",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "b0dee187-6a15-400d-89b1-c3e3b2112248",
+            "sourceColumn": "GENDER",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "RURAL",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "dcc90bfb-08de-42ee-8006-db66930748ef",
+            "sourceColumn": "RURAL",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "TYPE OF ADMISSION-EMERGENCY/OPD",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "1f323a72-1373-4d94-af7d-6a032a8e95ed",
+            "sourceColumn": "TYPE OF ADMISSION-EMERGENCY/OPD",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "month year",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "Long Date",
+            "lineageTag": "ee9605f1-cb1f-46b8-b586-578046961df6",
+            "sourceColumn": "month year",
+            "summarizeBy": "none",
+            "variations": [
+              {
+                "name": "Variation",
+                "defaultHierarchy": {
+                  "hierarchy": "Date Hierarchy",
+                  "table": "LocalDateTable_f44d6f36-4e8a-4675-97d8-78c18e7c64ec"
+                },
+                "isDefault": true,
+                "relationship": "9cdd552d-d339-4460-a0fc-8bf6f6699e0b"
+              }
+            ]
+          },
+          {
+            "name": "duration of intensive unit stay",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "be554d00-97da-460e-819d-106fd6969e64",
+            "sourceColumn": "duration of intensive unit stay",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "OUTCOME",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "6708fe3d-31d9-4377-afc0-af16a333aec8",
+            "sourceColumn": "OUTCOME",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "SMOKING ",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "3387479f-168a-4afe-8486-bae6b1e3716f",
+            "sourceColumn": "SMOKING ",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "ALCOHOL",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "53425d1b-e661-431b-8529-bdf425fd25de",
+            "sourceColumn": "ALCOHOL",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "DM",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "cecb791f-0bed-4764-bce8-3ba9e8df6461",
+            "sourceColumn": "DM",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "HTN",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "8f3f79be-9056-48e0-88ce-7c8d2ee8b340",
+            "sourceColumn": "HTN",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "CAD",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "457f0312-f0b7-4571-8779-9dad496a069f",
+            "sourceColumn": "CAD",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "PRIOR CMP",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "e3048a51-8da0-48e3-a46a-a0b099b65fcc",
+            "sourceColumn": "PRIOR CMP",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "CKD",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "9eed042f-ab4f-4928-a8b8-f1521296a2d2",
+            "sourceColumn": "CKD",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "HB",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "38691298-6b71-4e04-9ca3-fc6d29518b5b",
+            "sourceColumn": "HB",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "TLC",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "fa3cc08e-15a0-41ab-9bce-1f9e408acd00",
+            "sourceColumn": "TLC",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "PLATELETS",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "1200cd22-7e08-4093-b5d4-c43f639492d4",
+            "sourceColumn": "PLATELETS",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "GLUCOSE",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "b6aef1dd-1e6e-406b-8918-e6d4484cbf10",
+            "sourceColumn": "GLUCOSE",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "UREA",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "36430f22-e9df-4a32-803c-b60bd5ab458c",
+            "sourceColumn": "UREA",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "CREATININE",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "3d3f12f8-691d-4023-b615-b0fec370e59e",
+            "sourceColumn": "CREATININE",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "BNP",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "0d4c635e-c08d-4001-adb6-8178efc592d5",
+            "sourceColumn": "BNP",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "RAISED CARDIAC ENZYMES",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "fa4bd8f3-25e7-41dc-a505-f8e72da537ed",
+            "sourceColumn": "RAISED CARDIAC ENZYMES",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "EF",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "e5d09152-90ac-4cde-a13d-04627c14fcf8",
+            "sourceColumn": "EF",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "SEVERE ANAEMIA",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "6f2e359d-972f-4c7c-9ed8-7cd3614df269",
+            "sourceColumn": "SEVERE ANAEMIA",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "ANAEMIA",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "1f3259b7-d5ef-4de4-ad18-66a3bb28bbe7",
+            "sourceColumn": "ANAEMIA",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "STABLE ANGINA",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "f3c4c6c7-033c-45b4-b5fa-138a50f5c2ae",
+            "sourceColumn": "STABLE ANGINA",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "ACS",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "4adc88fc-d97a-4485-a3ac-1d377c653555",
+            "sourceColumn": "ACS",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "STEMI",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "47143e6c-fe3d-48ec-bb02-c3097fcac16c",
+            "sourceColumn": "STEMI",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "ATYPICAL CHEST PAIN",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "c083e8d9-3589-4fb8-9b44-92b31e258958",
+            "sourceColumn": "ATYPICAL CHEST PAIN",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "HEART FAILURE",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "a57487e1-be9a-4a13-b975-cb3d9938a713",
+            "sourceColumn": "HEART FAILURE",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "HFREF",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "bb3319f7-65f6-4eff-babd-c60e4763bb45",
+            "sourceColumn": "HFREF",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "HFNEF",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "e8225b1b-7749-4a8e-819b-158be9cc96a2",
+            "sourceColumn": "HFNEF",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "VALVULAR",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "bc2c3352-91c8-4b9c-92ac-5e23ed59867f",
+            "sourceColumn": "VALVULAR",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "CHB",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "570d6b99-47ce-4876-9c8b-db01958e4791",
+            "sourceColumn": "CHB",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "SSS",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "0190cc00-9519-44a7-880e-0a2266c5d027",
+            "sourceColumn": "SSS",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "AKI",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "51ea4577-2215-4183-aa46-b183f7aed82c",
+            "sourceColumn": "AKI",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "CVA INFRACT",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "79159de5-dcb9-4093-a46f-d54e25b35e50",
+            "sourceColumn": "CVA INFRACT",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "CVA BLEED",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "abb18d26-2e21-4051-b8d1-d74ad54cfeda",
+            "sourceColumn": "CVA BLEED",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "AF",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "ec472d5e-7935-45e5-94a4-756740da6bf6",
+            "sourceColumn": "AF",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "VT",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "82e2eb76-f677-4431-9f56-1239040c2689",
+            "sourceColumn": "VT",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "PSVT",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "64d1c270-c80b-4499-afa2-ac9c236467e8",
+            "sourceColumn": "PSVT",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "CONGENITAL",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "b7906541-f1b6-450c-a06f-4508531f9653",
+            "sourceColumn": "CONGENITAL",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "UTI",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "5bfa21a9-9b28-42d4-a62c-8fa7055dce0c",
+            "sourceColumn": "UTI",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "NEURO CARDIOGENIC SYNCOPE",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "5b9c0c4d-bcc8-4d8a-aa17-25dbfc5889c1",
+            "sourceColumn": "NEURO CARDIOGENIC SYNCOPE",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "ORTHOSTATIC",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "40efa5b9-acad-40e7-beb3-8ef7aec734d3",
+            "sourceColumn": "ORTHOSTATIC",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "INFECTIVE ENDOCARDITIS",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "e138796d-ba75-4f1b-b590-29c491a621f5",
+            "sourceColumn": "INFECTIVE ENDOCARDITIS",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "DVT",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "eca9c6a9-46b7-4a8e-a69e-d760aa37dd5f",
+            "sourceColumn": "DVT",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "CARDIOGENIC SHOCK",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "141a3732-3a5e-4203-9cf8-1beca1ee16ac",
+            "sourceColumn": "CARDIOGENIC SHOCK",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "SHOCK",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "d5a5abaf-032f-4011-a9a6-fe922d1caff6",
+            "sourceColumn": "SHOCK",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "PULMONARY EMBOLISM",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "184fd3b4-650c-4990-9c7c-a91e02ddb1f7",
+            "sourceColumn": "PULMONARY EMBOLISM",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "CHEST INFECTION",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "272f7626-74e8-46cd-8d4b-7581535161c3",
+            "sourceColumn": "CHEST INFECTION",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "DOCTORS NOTE",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "97214d42-6b66-4cd4-9311-8a0d2ca0c7fb",
+            "sourceColumn": "DOCTORS NOTE",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Stay Duration",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "expression": "DATEDIFF('HDHI Admission data'[D.O.A],'HDHI Admission data'[D.O.D],DAY)",
+            "formatString": "0",
+            "isDataTypeInferred": true,
+            "lineageTag": "4a06513a-2f82-45f7-9fc7-3af7c46173f6",
+            "summarizeBy": "sum",
+            "type": "calculated"
+          },
+          {
+            "name": "SMOKER",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "expression": "IF('HDHI Admission data'[SMOKING ] = 0 , \"N\",\"Y\")",
+            "isDataTypeInferred": true,
+            "lineageTag": "8327e5ab-2b2a-4c9f-8f6a-fa7de34d5049",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "ALCOHOLIC",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "expression": "IF('HDHI Admission data'[ALCOHOL] = 0 , \"N\", \"Y\")",
+            "isDataTypeInferred": true,
+            "lineageTag": "bcbf8e90-d668-4add-a25d-9811011c016d",
+            "summarizeBy": "none",
+            "type": "calculated"
+          }
+        ],
+        "lineageTag": "5b5618fb-ec6a-4c8a-a155-be4615156948",
+        "partitions": [
+          {
+            "name": "HDHI Admission data",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"E:\\HDHI Admission data.csv\"),[Delimiter=\",\", Columns=56, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"SNO\", Int64.Type}, {\"Admission No\", Int64.Type}, {\"D.O.A\", type text}, {\"D.O.D\", type text}, {\"AGE\", Int64.Type}, {\"GENDER\", type text}, {\"RURAL\", type text}, {\"TYPE OF ADMISSION-EMERGENCY/OPD\", type text}, {\"month year\", type date}, {\"duration of intensive unit stay\", Int64.Type}, {\"OUTCOME\", type text}, {\"SMOKING \", Int64.Type}, {\"ALCOHOL\", Int64.Type}, {\"DM\", Int64.Type}, {\"HTN\", Int64.Type}, {\"CAD\", Int64.Type}, {\"PRIOR CMP\", Int64.Type}, {\"CKD\", Int64.Type}, {\"HB\", type number}, {\"TLC\", type number}, {\"PLATELETS\", type text}, {\"GLUCOSE\", type text}, {\"UREA\", type text}, {\"CREATININE\", type text}, {\"BNP\", type text}, {\"RAISED CARDIAC ENZYMES\", Int64.Type}, {\"EF\", type text}, {\"SEVERE ANAEMIA\", Int64.Type}, {\"ANAEMIA\", Int64.Type}, {\"STABLE ANGINA\", Int64.Type}, {\"ACS\", Int64.Type}, {\"STEMI\", Int64.Type}, {\"ATYPICAL CHEST PAIN\", Int64.Type}, {\"HEART FAILURE\", Int64.Type}, {\"HFREF\", Int64.Type}, {\"HFNEF\", Int64.Type}, {\"VALVULAR\", Int64.Type}, {\"CHB\", Int64.Type}, {\"SSS\", Int64.Type}, {\"AKI\", Int64.Type}, {\"CVA INFRACT\", Int64.Type}, {\"CVA BLEED\", Int64.Type}, {\"AF\", Int64.Type}, {\"VT\", Int64.Type}, {\"PSVT\", Int64.Type}, {\"CONGENITAL\", Int64.Type}, {\"UTI\", Int64.Type}, {\"NEURO CARDIOGENIC SYNCOPE\", Int64.Type}, {\"ORTHOSTATIC\", Int64.Type}, {\"INFECTIVE ENDOCARDITIS\", Int64.Type}, {\"DVT\", Int64.Type}, {\"CARDIOGENIC SHOCK\", Int64.Type}, {\"SHOCK\", Int64.Type}, {\"PULMONARY EMBOLISM\", Int64.Type}, {\"CHEST INFECTION\", Int64.Type}, {\"DOCTORS NOTE\", type text}})",
+                "in",
+                "    #\"Changed Type\""
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "LocalDateTable_f44d6f36-4e8a-4675-97d8-78c18e7c64ec",
+        "annotations": [
+          {
+            "name": "__PBI_LocalDateTable",
+            "value": "true"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Date",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              }
+            ],
+            "dataCategory": "PaddedDateTableDates",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "isNameInferred": true,
+            "lineageTag": "f72af09a-d5ab-4ebb-9140-a18badfef1e3",
+            "sourceColumn": "[Date]",
+            "summarizeBy": "none",
+            "type": "calculatedTableColumn"
+          },
+          {
+            "name": "Year",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Year"
+              }
+            ],
+            "dataCategory": "Years",
+            "dataType": "int64",
+            "expression": "YEAR([Date])",
+            "isHidden": true,
+            "lineageTag": "d40e8623-366c-4970-aef4-b489b3287957",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "MonthNo",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "MonthNumber"
+              }
+            ],
+            "dataCategory": "MonthOfYear",
+            "dataType": "int64",
+            "expression": "MONTH([Date])",
+            "isHidden": true,
+            "lineageTag": "070872eb-985b-49de-8385-206a999268c0",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Month",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Month"
+              }
+            ],
+            "dataCategory": "Months",
+            "dataType": "string",
+            "expression": "FORMAT([Date], \"MMMM\")",
+            "isHidden": true,
+            "lineageTag": "bcae98fe-ad94-4cb0-89ac-db197202deba",
+            "sortByColumn": "MonthNo",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "QuarterNo",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "QuarterNumber"
+              }
+            ],
+            "dataCategory": "QuarterOfYear",
+            "dataType": "int64",
+            "expression": "INT(([MonthNo] + 2) / 3)",
+            "isHidden": true,
+            "lineageTag": "f9f0ccfc-4567-4c07-96f5-eb4e60d850a6",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Quarter",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Quarter"
+              }
+            ],
+            "dataCategory": "Quarters",
+            "dataType": "string",
+            "expression": "\"Qtr \" & [QuarterNo]",
+            "isHidden": true,
+            "lineageTag": "74fdf1bf-1546-4a7a-92f3-d15295e75354",
+            "sortByColumn": "QuarterNo",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Day",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Day"
+              }
+            ],
+            "dataCategory": "DayOfMonth",
+            "dataType": "int64",
+            "expression": "DAY([Date])",
+            "isHidden": true,
+            "lineageTag": "8e0cae0f-a2e4-42a6-b500-d3b30db3083d",
+            "summarizeBy": "none",
+            "type": "calculated"
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "Date Hierarchy",
+            "annotations": [
+              {
+                "name": "TemplateId",
+                "value": "DateHierarchy"
+              }
+            ],
+            "levels": [
+              {
+                "name": "Year",
+                "column": "Year",
+                "lineageTag": "e9a769c6-9ffc-4a31-bb45-a98c2231a276",
+                "ordinal": 0
+              },
+              {
+                "name": "Quarter",
+                "column": "Quarter",
+                "lineageTag": "5f9a994c-50bb-4703-bf2a-419ba599a45e",
+                "ordinal": 1
+              },
+              {
+                "name": "Month",
+                "column": "Month",
+                "lineageTag": "1130a6ed-ab3f-4de5-a85e-1e94632c0e52",
+                "ordinal": 2
+              },
+              {
+                "name": "Day",
+                "column": "Day",
+                "lineageTag": "7629601d-3493-4b1f-8219-b69e01bb59e7",
+                "ordinal": 3
+              }
+            ],
+            "lineageTag": "a860397b-7fc0-43b0-9ce7-341dc45f3209"
+          }
+        ],
+        "isHidden": true,
+        "lineageTag": "ff5dcb2e-62fe-4afa-8a86-2d77825c5ecb",
+        "partitions": [
+          {
+            "name": "LocalDateTable_f44d6f36-4e8a-4675-97d8-78c18e7c64ec",
+            "mode": "import",
+            "source": {
+              "expression": "Calendar(Date(Year(MIN('HDHI Admission data'[month year])), 1, 1), Date(Year(MAX('HDHI Admission data'[month year])), 12, 31))",
+              "type": "calculated"
+            }
+          }
+        ],
+        "showAsVariationsOnly": true
+      },
+      {
+        "name": "Master Data",
+        "annotations": [
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Admission Num",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "a4dde3dc-d963-4410-8268-32ca1b8b7435",
+            "sourceColumn": "Admission Num",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Patient Name",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "f7312e05-efa3-43e4-9567-443d02555130",
+            "sourceColumn": "Patient Name",
+            "summarizeBy": "none"
+          }
+        ],
+        "lineageTag": "375eacec-baec-429f-8c65-d95526917288",
+        "partitions": [
+          {
+            "name": "Master Data",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"E:\\Master Data.csv\"),[Delimiter=\",\", Columns=2, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"Admission Num\", Int64.Type}, {\"Name\", type text}}),",
+                "    #\"Renamed Columns\" = Table.RenameColumns(#\"Changed Type\",{{\"Name\", \"Patient Name\"}})",
+                "in",
+                "    #\"Renamed Columns\""
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
